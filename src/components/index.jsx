@@ -23,10 +23,12 @@ import MenuReport from "./admin/MenuReport";
 import MenuTypeReport from "./admin/MenuTypeReport";
 // import DeleteHistory from "./admin/DeleteHistory";
 import AdminActivityLog from "./admin/AdminActivityLog";
+import ImageUploader from "./ImageUploader";
 
 function Lobby() {
     return (
         <Routes>
+            <Route path="/upload/image/test" element={<ImageUploader />} />
             {/* 🔸 เส้นทางฝั่งลูกค้า */}
             <Route path="/" element={<Navigate to="/menu" replace />} />
             <Route path="/menu" element={<Menu />} />
