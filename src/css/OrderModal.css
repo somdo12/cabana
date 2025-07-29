@@ -1,0 +1,43 @@
+.order-modal-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.order-modal-content {
+    background: white;
+    width: 95%;
+    max-width: 360px;
+    padding: 24px;
+    border-radius: 16px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    animation: slideUp 0.3s ease-out;
+    font-family: 'Noto Sans Lao', sans-serif;
+}
+
+.order-modal-content h2 {
+    margin-bottom: 10px;
+    font-size: 20px;
+}
+
+.order-modal-content .modal-menu-image {
+    width: 100%;
+    max-height: 160px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 12px;
+}
+
+.order-modal-content textarea,
+.order-modal-content button,
+.order-modal-content .quantity-control {
+    margin-top: 10px;
+    width: 100%;
+}

@@ -1,0 +1,78 @@
+/* Admin Dashboard */
+.admin-dashboard {
+    margin-left: 240px;
+    padding: 30px;
+    background-color: #f4f6f8;
+    min-height: 100vh;
+    font-family: 'Noto Sans Lao', sans-serif;
+}
+
+.dashboard-title {
+    text-align: center;
+    font-size: 28px;
+    font-weight: bold;
+    color: #2c3e50;
+    margin-bottom: 10px;
+}
+
+.dashboard-subtitle {
+    text-align: center;
+    color: #7f8c8d;
+    font-size: 16px;
+    margin-bottom: 30px;
+}
+
+.dashboard-cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+.dashboard-card {
+    background-color: #2c3e50;
+    color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    width: 200px;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.dashboard-card h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+    font-weight: 700;
+    color: #ecf0f1;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.dashboard-card p {
+    font-size: 20px;
+    font-weight: bold;
+    color: #f9f9f9;
+}
+
+.dashboard-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.4);
+}
+
+/* ปุ่ม QR Code */
+.btn-queue {
+    background-color: #3498db;
+    color: #fff;
+    font-weight: bold;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 15px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-queue:hover {
+    background-color: #5dade2;
+    transform: scale(1.05);
+}

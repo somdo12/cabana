@@ -1,0 +1,180 @@
+.order-items-box {
+    background-color: #1e1e1e;
+    border: 2px solid #f39c12;
+    border-radius: 10px;
+    padding: 20px;
+    color: white;
+    margin-top: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.order-items-title {
+    font-size: 20px;
+    color: #f39c12;
+    margin-bottom: 10px;
+}
+
+.order-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid #333;
+}
+
+.order-item:last-child {
+    border-bottom: none;
+}
+
+.order-item-name {
+    font-weight: bold;
+}
+
+.order-item-total {
+    color: #f1c40f;
+}
+
+
+/* พื้นหลังทั้งหน้า */
+.order-status-container {
+    background-color: #121212;
+    color: #ffffff;
+    padding: 20px;
+    min-height: 100vh;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+/* หัวข้อใหญ่ */
+.order-status-container h2 {
+    color: #f39c12;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* กล่องข้อมูลคำสั่งซื้อ */
+.order-info {
+    background-color: #1e1e1e;
+    border-left: 4px solid #f39c12;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    margin-bottom: 20px;
+}
+
+/* ข้อความแต่ละบรรทัด */
+.order-info p {
+    margin: 8px 0;
+    font-size: 16px;
+}
+
+.order-items-box {
+    background-color: #1e1e1e;
+    border: 2px solid #f39c12;
+    border-radius: 10px;
+    padding: 20px;
+    color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.order-items-title {
+    font-size: 18px;
+    color: #f39c12;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.order-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid #333;
+    font-size: 15px;
+}
+
+.order-item:last-child {
+    border-bottom: none;
+}
+
+.order-item-name {
+    font-weight: bold;
+    color: #f1f1f1;
+}
+
+.order-item-total {
+    color: #f1c40f;
+}
+
+/* ✅ Responsive */
+@media (max-width: 768px) {
+    .order-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .order-item-total {
+        margin-top: 4px;
+    }
+
+    .order-info p {
+        font-size: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .order-status-container {
+        padding: 10px;
+    }
+
+    .order-info,
+    .order-items-box {
+        padding: 15px;
+    }
+
+    .order-info p {
+        font-size: 14px;
+    }
+
+    .order-items-title {
+        font-size: 16px;
+    }
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    color: white;
+    margin-top: 4px;
+}
+
+.status-preparing {
+    background-color: #f39c12;
+}
+
+.status-done {
+    background-color: #3498db;
+}
+
+.status-served {
+    background-color: #2ecc71;
+}
+
+.back-to-menu-btn {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #f39c12;
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: 'Noto Sans Lao', sans-serif;
+}
+
+.back-to-menu-btn:hover {
+    background-color: #d68910;
+}

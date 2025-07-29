@@ -1,0 +1,111 @@
+
+// import "../css/OrderModal.css";
+// const OrderModal = ({ menu, quantity, note, onClose, onAddToCart, onQuantityChange, onNoteChange }) => {
+//     if (!menu) return null;
+
+//     return (
+//         // <div className="modal-overlay" onClick={onClose}>
+//         //     <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+//         <div className="order-modal-overlay" onClick={onClose}>
+//             <div className="order-modal-content" onClick={(e) => e.stopPropagation()}>
+//                 {/* ຮູບເມນູ */}
+//                 <img
+//                     className="modal-menu-image"
+//                     src={`/img/${menu.image}`}
+//                     alt={menu.menu_name}
+//                 />
+
+//                 {/* ຊື່ເມນູ */}
+//                 <h2>{menu.menu_name}</h2>
+
+//                 {/* ລາຄາຕໍ່ໜ່ວຍ */}
+//                 <p><strong>💰 ລາຄາ:</strong> {Number(menu.menu_price).toLocaleString()} ກີບ</p>
+
+//                 {/* ປຸ່ມເພີ່ມ/ລົບ */}
+//                 <div className="quantity-control">
+//                     <button onClick={() => onQuantityChange(-1)}>-</button>
+//                     <span>{quantity}</span>
+//                     <button onClick={() => onQuantityChange(1)}>+</button>
+//                 </div>
+
+//                 {/* ລາຄາລວມ */}
+//                 <p><strong>📦 ລວມ:</strong> {(menu.menu_price * quantity).toLocaleString()} ກີບ</p>
+
+//                 {/* ໝາຍເຫດ */}
+//                 <textarea
+//                     className="note-input"
+//                     placeholder="ໝາຍເຫດເພີ່ມເຕີມ (ຕົວຢ່າງ: ບໍ່ໃສ່ນ້ຳຕານ)"
+//                     value={note}
+//                     onChange={(e) => onNoteChange(e.target.value)}
+//                 />
+
+//                 {/* ປຸ່ມຢືນຢັນ */}
+//                 <button className="confirm-order-btn" onClick={onAddToCart}>
+//                     ➕ ເພີ່ມໃສ່ກະຕ່າສິນຄ້າ
+//                 </button>
+
+//                 {/* ປຸ່ມປິດ */}
+//                 <button className="modal-close-btn" onClick={onClose}>ປິດ</button>
+//             </div>
+//         </div>
+//     );
+// };
+
+// export default OrderModal;
+import "../css/OrderModal.css";
+
+const OrderModal = ({ menu, quantity, note, onClose, onAddToCart, onQuantityChange, onNoteChange }) => {
+    if (!menu) return null;
+
+    return (
+        <div className="order-modal-overlay" onClick={onClose}>
+            <div className="order-modal-content" onClick={(e) => e.stopPropagation()}>
+                
+                {/* รูปเมนู */}
+                <img
+                    className="modal-menu-image"
+                    src={`/img/${menu.image}`}
+                    alt={menu.menu_name}
+                />
+
+                {/* ชื่อเมนู */}
+                <h2>{menu.menu_name}</h2>
+
+                {/* ราคาต่อหน่วย */}
+                <p>
+                    <strong>💰 ລາຄາ:</strong> {Number(menu.menu_price).toLocaleString()} ກີບ
+                </p>
+
+                {/* ปุ่มเพิ่ม/ลดจำนวน */}
+                <div className="quantity-control">
+                    <button onClick={() => onQuantityChange(-1)}>-</button>
+                    <span>{quantity}</span>
+                    <button onClick={() => onQuantityChange(1)}>+</button>
+                </div>
+
+                {/* ราคารวม */}
+                <p>
+                    <strong>📦 ລວມ:</strong> {(menu.menu_price * quantity).toLocaleString()} ກີບ
+                </p>
+
+                {/* ช่องหมายเหตุ */}
+                <textarea
+                    className="note-input"
+                    placeholder="ໝາຍເຫດເພີ່ມເຕີມ (ຕົວຢ່າງ: ບໍ່ໃສ່ນ້ຳຕານ)"
+                    value={note}
+                    onChange={(e) => onNoteChange(e.target.value)}
+                />
+
+                {/* ปุ่มยืนยัน */}
+                <button className="confirm-order-btn" onClick={onAddToCart}>
+                    ➕ ເພີ່ມໃສ່ກະຕ່າສິນຄ້າ
+                </button>
+
+                {/* ปุ่มปิด */}
+                <button className="modal-close-btn" onClick={onClose}>ປິດ</button>
+            </div>
+        </div>
+    );
+};
+
+export default OrderModal;

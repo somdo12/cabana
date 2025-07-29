@@ -1,0 +1,118 @@
+/* =======================
+   MenuTypeReport.css
+   ======================= */
+
+.menu-type-report-container {
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    max-width: 1000px;
+    margin: 20px auto;
+    font-family: 'Noto Sans Lao', sans-serif;
+}
+
+.menu-type-report-container h2 {
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #2c3e50;
+}
+
+/* Search Box */
+.search-box {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 15px;
+}
+
+.search-box input {
+    padding: 8px 12px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    outline: none;
+    width: 220px;
+    transition: border 0.3s ease;
+}
+
+.search-box input:focus {
+    border-color: #3498db;
+}
+
+.search-box button {
+    padding: 8px 16px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #fff;
+    background-color: #e74c3c;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.search-box button:hover {
+    background-color: #c0392b;
+}
+
+/* Table */
+.report-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.report-table thead {
+    background-color: #2c3e50;
+    color: #fff;
+}
+
+.report-table th,
+.report-table td {
+    text-align: center;
+    padding: 10px;
+    font-size: 14px;
+    border-bottom: 1px solid #ddd;
+}
+
+.report-table tbody tr:hover {
+    background-color: #f2f2f2;
+}
+
+/* No Data */
+.report-table td[colspan="4"] {
+    text-align: center;
+    padding: 15px;
+    color: #888;
+    font-style: italic;
+}
+
+/* Responsive */
+@media (max-width: 767px) {
+    .menu-type-report-container {
+        padding: 10px;
+        margin: 10px;
+    }
+
+    .search-box {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .search-box input,
+    .search-box button {
+        width: 100%;
+        max-width: 300px;
+    }
+
+    .report-table th,
+    .report-table td {
+        font-size: 12px;
+        padding: 8px;
+    }
+}

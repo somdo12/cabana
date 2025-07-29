@@ -1,0 +1,58 @@
+.register-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: linear-gradient(to bottom right, #dbeafe, #e9d5ff);
+    font-family: "Noto Sans Lao", sans-serif;
+}
+
+.form-container {
+    background-color: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    font-family: "Noto Sans Lao", sans-serif;
+    text-align: center;
+}
+
+.form-container h2 {
+    margin-bottom: 10px;
+    color: #333;
+    font-size: 24px;
+    font-family: "Noto Sans Lao", sans-serif;
+}
+
+.form-container p {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 20px;
+    font-family: "Noto Sans Lao", sans-serif;
+}
+
+.form-container input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-family: "Noto Sans Lao", sans-serif;
+}
+
+.form-container button {
+    width: 100%;
+    padding: 10px;
+    background-color: #4f46e5;
+    border: none;
+    color: white;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: "Noto Sans Lao", sans-serif;
+}
+
+.form-container button:hover {
+    background-color: #4338ca;
+}

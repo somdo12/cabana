@@ -1,0 +1,408 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Lao&display=swap');
+
+body {
+    font-family: 'Noto Sans Lao', sans-serif;
+}
+
+.menu-container {
+    padding: 20px;
+    /* font-family: 'Arial', sans-serif; */
+    max-width: 1200px;
+    margin: auto;
+}
+
+.menu-title {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #333;
+}
+
+.menu-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.menu-item {
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.2s ease;
+    overflow: hidden;
+}
+
+.menu-item:hover {
+    transform: scale(1.02);
+}
+
+.menu-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.menu-image-modal {
+    width: 100%;
+    max-height: 200px;
+    object-fit: contain;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+
+.menu-info {
+    font-size: 1rem;
+    color: #444;
+    margin: 5px 0;
+    font-family: 'Noto Sans Lao', sans-serif;
+}
+
+.menu-price {
+    color: #28a745;
+    font-weight: bold;
+    margin-top: 5px;
+}
+
+/* ปุ่มดูรายละเอียด */
+.menu-detail-btn {
+    margin-top: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    width: 100%;
+    transition: background-color 0.3s;
+    font-family: 'Noto Sans Lao', sans-serif;
+}
+
+.menu-detail-btn:hover {
+    background-color: #0056b3;
+}
+
+/* Modal Overlay */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(136, 15, 15, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+/* Modal Content */
+.modal-content {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    animation: slideUp 0.3s ease-out;
+}
+
+/* ปิด Modal */
+.close-modal-btn {
+    margin-top: 20px;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.close-modal-btn:hover {
+    background-color: #c82333;
+}
+
+/* Animation */
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .menu-title {
+        font-size: 1.5rem;
+    }
+
+    .menu-info {
+        font-size: 0.95rem;
+    }
+
+    .menu-image {
+        height: 180px;
+    }
+}
+
+@media (max-width: 480px) {
+    .menu-item {
+        padding: 10px;
+    }
+
+    .menu-image {
+        height: 150px;
+    }
+
+    .modal-content {
+        padding: 20px;
+    }
+}
+
+/* รูปภาพใน Modal */
+.modal-image {
+    width: 100%;
+    max-width: 300px;
+    /* กำหนดให้เล็กลง */
+    height: auto;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+/* ส่วนเลือกจำนวน */
+.quantity-section {
+    margin: 20px 0;
+    font-size: 1rem;
+}
+
+/* ปุ่มยืนยันสั่งซื้อ */
+.confirm-order-btn {
+    margin-top: 10px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    width: 100%;
+    transition: background-color 0.3s;
+    font-family: 'Noto Sans Lao', sans-serif;
+}
+
+.confirm-order-btn:hover {
+    background-color: #218838;
+}
+
+
+
+
+
+
+.modal-menu-image {
+    width: 100%;
+    max-height: 150px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
+
+.quantity-control {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px 0;
+}
+
+.quantity-control button {
+    width: 30px;
+    height: 30px;
+    font-size: 18px;
+    margin: 0 10px;
+    cursor: pointer;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 50%;
+}
+
+.quantity-control span {
+    font-size: 18px;
+    min-width: 30px;
+    text-align: center;
+}
+
+.note-input {
+    width: 100%;
+    margin-top: 10px;
+    padding: 8px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    font-family: 'Noto Sans Lao', sans-serif;
+}
+
+/* กล่องเพิ่มโน้ต */
+
+.menu-price {
+    color: #28a745;
+    font-weight: bold;
+    font-size: 1rem;
+    margin: 0.5rem 0;
+}
+
+/* ຂອງໄຟ້ ismodal */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    padding: 1rem;
+    box-sizing: border-box;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 15px;
+    width: 100%;
+    max-width: 420px;
+    padding: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    animation: slideUp 0.3s ease-out;
+}
+
+/* ✅ เพิ่มความสวยงามสำหรับมือถือ */
+@media (max-width: 768px) {
+    .modal-content {
+        width: 100%;
+        margin: 0;
+        border-radius: 12px;
+    }
+}
+
+/* ปุ่มปิด */
+.modal-close-btn {
+    margin-top: 10px;
+    background-color: #ccc;
+    border: none;
+    border-radius: 8px;
+    font-size: 18px;
+    padding: 6px 14px;
+    cursor: pointer;
+    font-family: 'Noto Sans Lao', sans-serif;
+}
+
+/* ภาพ */
+.modal-menu-image {
+    width: 100%;
+    max-height: 200px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+/* ควบคุมจำนวน */
+.quantity-control {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 15px 0;
+}
+
+.quantity-control button {
+    width: 35px;
+    height: 35px;
+    font-size: 20px;
+    margin: 0 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.quantity-control span {
+    font-size: 18px;
+    min-width: 30px;
+    text-align: center;
+}
+
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7); /* ทำให้มืดขึ้นเล็กน้อย */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    font-family: 'Noto Sans Lao', sans-serif;
+}
+
+.popup-content {
+    background: #1c1c1c; /* ดำเข้ม */
+    color: #f1f1f1;
+    padding: 25px 30px;
+    border-radius: 12px;
+    text-align: center;
+    max-width: 350px;
+    width: 90%;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+    animation: fadeIn 0.3s ease;
+    z-index: 10000;
+}
+
+/* ข้อความหัวเรื่อง */
+.popup-content h3 {
+    color: #f39c12;  /* สีทอง */
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+    text-shadow: 0px 0px 5px rgba(0, 0, 0, 0.8);
+}
+
+/* ข้อความปกติ */
+.popup-content p {
+    font-size: 1rem;
+    margin-bottom: 20px;
+    color: #ddd; /* ให้ข้อความปกติสว่างขึ้น */
+}
+
+/* ปุ่ม */
+.popup-content button {
+    background: #f39c12;
+    border: none;
+    color: #1c1c1c;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.2s ease;
+}
+
+.popup-content button:hover {
+    background: #e67e22;
+}

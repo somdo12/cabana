@@ -1,0 +1,79 @@
+.cart-summary-popup {
+    font-family: "Noto Sans Lao", sans-serif;
+    background: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+    color: #333;
+}
+
+.cart-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.cart-empty {
+    font-size: 14px;
+    color: #666;
+}
+
+.cart-items {
+    margin-bottom: 10px;
+}
+
+.cart-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+    font-size: 14px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 4px;
+}
+
+.item-name {
+    flex: 1;
+    text-align: left;
+}
+
+.item-price {
+    font-weight: bold;
+    color: #2ecc71;
+    margin-left: 5px;
+}
+
+.remove-btn {
+    background: #e74c3c;
+    color: white;
+    border: none;
+    padding: 3px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    margin-left: 10px;
+}
+.remove-btn:hover {
+    background: #c0392b;
+}
+
+.cart-total {
+    font-size: 15px;
+    margin: 8px 0;
+    font-weight: bold;
+}
+
+.confirm-order-btn {
+    background: #27ae60;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+}
+.confirm-order-btn:hover {
+    background: #1e8449;
+}

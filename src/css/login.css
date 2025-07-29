@@ -1,0 +1,75 @@
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: linear-gradient(to bottom right, #dbeafe, #e9d5ff);
+    font-family: "Noto Sans Lao", sans-serif;
+}
+
+.login-form {
+    background-color: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    font-family: "Noto Sans Lao", sans-serif;
+}
+
+.login-title {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+    font-family: "Noto Sans Lao", sans-serif;
+}
+
+.login-form label {
+    display: block;
+    margin-top: 10px;
+    font-weight: bold;
+    color: #444;
+    font-family: "Noto Sans Lao", sans-serif;
+}
+
+.login-form input,
+.login-form select {
+    width: 100%;
+    padding: 8px 10px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-family: "Noto Sans Lao", sans-serif;
+}
+
+.password-wrapper {
+    position: relative;
+}
+
+.toggle-button {
+    position: absolute;
+    top: 6px;
+    right: 10px;
+    background: none;
+    border: none;
+    color: #007bff;
+    cursor: pointer;
+    font-size: 12px;
+    font-family: "Noto Sans Lao", sans-serif;
+}
+
+.login-btn {
+    width: 100%;
+    padding: 10px;
+    background-color: #4f46e5;
+    border: none;
+    color: white;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: "Noto Sans Lao", sans-serif;
+}
+
+.login-btn:hover {
+    background-color: #4338ca;
+}
