@@ -267,6 +267,7 @@ import React, { useEffect, useState } from "react";
 import Axios from "axios";
 import "../../css/AdminMenuManager.css";
 import { API_BASE_URL } from "../../config"; // <<<< เพิ่มการ import
+import { UploadImageIntoServer } from "./uploadImage";
 
 
 function AdminMenuManager() {
@@ -280,7 +281,7 @@ function AdminMenuManager() {
         menu_name: "",
         menu_price: "",
         menu_type_id: "",
-        image: "",
+        imageFile: "",
     });
 
     const [editMenu, setEditMenu] = useState(null);
@@ -288,6 +289,10 @@ function AdminMenuManager() {
     const handleAddMenu = async () => {
         try {
             console.log("📤 Adding menu:", newMenu);
+
+            const uploadedImageData = await UploadImageIntoServer(newMenu.imageFile);
+            console.log("Uploaded image data:", uploadedImageData);
+
             const res = await Axios.post(
                 `${API_BASE_URL}/create`,
                 {
@@ -297,7 +302,7 @@ function AdminMenuManager() {
                         menu_name: newMenu.menu_name,
                         menu_type_id: parseInt(newMenu.menu_type_id),
                         menu_price: parseInt(newMenu.menu_price),
-                        image: newMenu.image,
+                        image: uploadedImageData.data.data.name,
                     },
                 },
                 { headers: { "Content-Type": "application/json" } }
@@ -314,7 +319,7 @@ function AdminMenuManager() {
                     menu_name: "",
                     menu_price: "",
                     menu_type_id: "",
-                    image: "",
+                    imageFile: "",
                 });
             } else {
                 alert("❌ ເພີ່ມເມນູບໍ່ສຳເລັດ: " + msg);
@@ -501,7 +506,7 @@ function AdminMenuManager() {
                         <tr key={menu.menu_id}>
                             <td>
                                 <img
-                                    src={`/img/${menu.image}`}
+                                    src={`http://localhost:5000/storages/images/${menu.image}`}
                                     alt={menu.menu_name}
                                     className="menu-img"
                                 />
@@ -576,7 +581,7 @@ function AdminMenuManager() {
                             onChange={(e) => {
                                 const file = e.target.files[0];
                                 if (file) {
-                                    setNewMenu({ ...newMenu, image: file.name });
+                                    setNewMenu({ ...newMenu, imageFile: file });
                                 }
                             }}
                         />
@@ -588,7 +593,7 @@ function AdminMenuManager() {
                                     marginTop: "5px",
                                 }}
                             >
-                                📂 ໄຟລ໌ທີ່ເລືອກ: <strong>{newMenu.image}</strong>
+                                📂 ໄຟລ໌ທີ່ເລືອກ: <strong>{newMenu.imageFile.name}</strong>
                             </p>
                         )}
                         <div style={{ marginTop: "10px" }}>
