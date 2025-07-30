@@ -1,62 +1,3 @@
-// import { useEffect, useState } from "react";
-// import { useNavigate, useLocation } from "react-router-dom";
-// import Axios from "axios";
-// import "../css/MenuTypeButtons.css"; // อย่าลืมสร้างไฟล์นี้นะครับ
-
-// function MenuTypeButtons() {
-//     const [menuTypes, setMenuTypes] = useState([]);
-//     const navigate = useNavigate();
-//     const location = useLocation();
-    
-//     useEffect(() => {
-//         fetchMenuTypes();
-//     }, []);
-
-//     const fetchMenuTypes = async () => {
-//         try {
-//             const uri = "http://localhost:5000/v1/store/fetch";
-//             const bodyData = {
-//                 db_type: "mysql",
-//                 store_code: "tb_menu_type",
-//                 field_list: "*",
-//                 where: "*"
-//             };
-//             const headers = { "Content-Type": "application/json" };
-//             const result = await Axios.post(uri, bodyData, headers);
-//             setMenuTypes(result.data.data || []);
-//         } catch (error) {
-//             console.error("fetchMenuTypes error", error);
-//         }
-//     };
-
-//     const handleChange = (e) => {
-//         const selectedType = e.target.value;
-//         if (selectedType === "") {
-//             navigate("/menu");
-//         } else {
-//             navigate(`/menu?type=${selectedType}`);
-//         }
-//     };
-//     // console.log("location.search", location.search);
-
-//     const selectedTypeFromUrl = new URLSearchParams(location.search).get('type') || "";
-
-//     return (
-//         <div className="menu-type-dropdown">
-//             <label className="dropdown-label"></label>
-//             <select value={selectedTypeFromUrl} onChange={handleChange} className="dropdown-select">
-//                 <option value="">Menu Type</option>
-//                 {menuTypes.map((type) => (
-//                     <option key={type.menu_type_id} value={type.menu_type_id}>
-//                         {type.menu_type_name}
-//                     </option>
-//                 ))}
-//             </select>
-//         </div>
-//     );
-// }
-
-// export default MenuTypeButtons;
 
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -100,20 +41,28 @@ function MenuTypeButtons() {
     const selectedTypeFromUrl = new URLSearchParams(location.search).get("type") || "";
 
     return (
-        <div className="menu-type-dropdown">
-            <select
-                value={selectedTypeFromUrl}
-                onChange={handleChange}
-                className="dropdown-select"
-            >
-                <option value="">Menu Type</option>
-                {menuTypes.map((type) => (
-                    <option key={type.menu_type_id} value={type.menu_type_id}>
-                        {type.menu_type_name}
-                    </option>
-                ))}
-            </select>
-        </div>
+    
+        <div className="menu-type-buttons">
+    <button
+        className={`menu-type-btn ${selectedTypeFromUrl === "" ? "active" : ""}`}
+        onClick={() => handleChange({ target: { value: "" } })}
+    >
+        Menu Type
+    </button>
+
+    {menuTypes.map((type) => (
+        <button
+            key={type.menu_type_id}
+            className={`menu-type-btn ${
+                selectedTypeFromUrl === type.menu_type_id ? "active" : ""
+            }`}
+            onClick={() => handleChange({ target: { value: type.menu_type_id } })}
+        >
+            {type.menu_type_name}
+        </button>
+    ))}
+</div>
+
     );
 }
 

@@ -14,14 +14,13 @@ import AdminSalesReport from "./admin/AdminSalesReport";
 import AdminMenuManager from "./admin/AdminMenuManager";
 import UserList from "./admin/UserList";
 import UploadToCloudinary from "./UploadToCloudinary";
-import TestSocket from "./test-socket";
+// import TestSocket from "./test-socket";
 import Bill from "./admin/Bill";
 import AdminDashboard from "./admin/AdminDashboard";
 import QRCodePage from "./QRCodePage";
 import PrivateRoute from "./PrivateRoute";
 import MenuReport from "./admin/MenuReport";
 import MenuTypeReport from "./admin/MenuTypeReport";
-// import DeleteHistory from "./admin/DeleteHistory";
 import AdminActivityLog from "./admin/AdminActivityLog";
 import ImageUploader from "./ImageUploader";
 
@@ -33,7 +32,6 @@ function Lobby() {
             <Route path="/" element={<Navigate to="/menu" replace />} />
             <Route path="/menu" element={<Menu />} />
             <Route path="/UploadToCloudinary" element={<UploadToCloudinary />} />
-            <Route path="/socket" element={<TestSocket />} />
             <Route path="/MenuTypeButtons" element={<MenuTypeButtons />} />
             <Route path="/Todolist" element={<Todolist />} />
             <Route path="/login" element={<Login />} />
@@ -55,10 +53,8 @@ function Lobby() {
                 <Route path="menu" element={<AdminMenuManager />} />
                 <Route path="users" element={<UserList />} />
                 <Route path="register" element={<Register />} />
-                <Route path="report-menu" element={<MenuReport />} /> {/* ✅ เพิ่มตรงนี้ */}
-                <Route path="report-menu-type" element={<MenuTypeReport />} />
-                {/* <Route path="delete-history" element={<DeleteHistory />} /> */}
-                
+                <Route path="report-menu" element={<MenuReport />} /> 
+                <Route path="report-menu-type" element={<MenuTypeReport />} />                
                 <Route path="activity-log" element={<AdminActivityLog />} />
 
 

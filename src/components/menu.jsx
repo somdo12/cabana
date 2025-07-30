@@ -4,6 +4,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Axios from "axios";
 import socket from "./admin/socket-conn";
 
+
+
 import TopNav from "./TopNav";
 import MenuItem from "./MenuItem";
 import OrderModal from "./OrderModal";
@@ -37,6 +39,7 @@ function Menu() {
 
     /** ====== ดึงข้อมูลเมนู ====== */
     const fetchListData = useCallback(async () => {
+        console.log("fetchListData");
         try {
             const res = await Axios.post(`${API_BASE_URL}/fetch`, {
                 db_type: "mysql",
@@ -125,7 +128,7 @@ function Menu() {
     const submitOrder = async () => {
         console.log("DEBUG: submitOrder called, cart =", cart);
         if (cart.length === 0) {
-            alert("🛒 ກະລຸນາເພີ່ມລາຍການກ່ອນກົດສັ່ງຊື້");
+            // alert("🛒 ກະລຸນາເພີ່ມລາຍການກ່ອນກົດສັ່ງຊື້");
             return;
         }
 

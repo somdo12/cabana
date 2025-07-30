@@ -9,10 +9,9 @@ import "../css/register.css";
 
 const RegisterForm = () => {
     const [formData, setFormData] = useState({
-        name: "",
-        email: "",
-        // password: "", ບ່ອນນີ້1
-        secretword: ""
+        user_name: "",
+        user_email: "",
+        user_password: ""
     });
 
     const currentUser = JSON.parse(localStorage.getItem("user")); // แอดมิน/สตาฟที่ล็อกอิน
@@ -33,12 +32,12 @@ const RegisterForm = () => {
             // ✅ เพิ่มผู้ใช้
             const bodyData = {
                 db_type: "mysql",
-                store_code: "user_privacy",
+                store_code: "user_auth",
                 set: {
-                    email: formData.email,
-                    user_name: formData.name,
-                    // secretword: formData.password,
-                    secretword: formData.secretword,
+                    email: formData.user_email,
+                    user_name: formData.user_name,
+                
+                    user_password: formData.user_password,
                     user_role: "staff", // ให้ default เป็น staff
                 },
             };
@@ -69,8 +68,8 @@ const RegisterForm = () => {
 
             alert("ລົງທະບຽນສຳເລັດແລ້ວ!");
 
-            // setFormData({ name: "", email: "", password: "" });
-            setFormData({ name: "", email: "", secretword: "" });
+        
+            setFormData({ name: "", email: "", user_password: "" });
             navigate("/admin/users");
         } catch (error) {
             console.error("Error :", error);
@@ -87,18 +86,18 @@ const RegisterForm = () => {
 
                 <input
                     type="text"
-                    name="name"
+                    name="user_name"
                     placeholder="ຊື່-ນາມສະກຸນ"
-                    value={formData.name}
+                    value={formData.user_name}
                     onChange={handleChange}
                     required
                 />
 
                 <input
                     type="email"
-                    name="email"
+                    name="user_email"
                     placeholder="ອີເມວ"
-                    value={formData.email}
+                    value={formData.user_email}
                     onChange={handleChange}
                     required
                 />
@@ -106,10 +105,10 @@ const RegisterForm = () => {
                 <input
                     type="password"
                     // name="password" ບ່ອນ3
-                    name="secretword"
+                    name="user_password"
                     placeholder="ລະຫັດຜ່ານ"
-                    // value={formData.password} ບ່ອນ2
-                    value={formData.secretword}
+                
+                    value={formData.user_password}
                     onChange={handleChange}
                     required
                 />
@@ -136,7 +135,7 @@ export default RegisterForm;
 //     const [formData, setFormData] = useState({
 //         user_name: "",
 //         email: "",
-//         secretword: ""
+//         user_password: ""
 //     });
 
 //     const navigate = useNavigate();
@@ -150,7 +149,7 @@ export default RegisterForm;
 //         try {
 //             const payload = {
 //                 db_type: "mysql",
-//                 store_code: "user_privacy",
+//                 store_code: "user_auth",
 //                 set: formData
 //             };
 

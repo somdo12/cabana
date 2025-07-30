@@ -8,19 +8,10 @@ function QRCodePage() {
     const ip = useServerIP();
 
     useEffect(() => {
-        // axios.get("http://localhost:5000/v1/wifi-ipv4")
-        //     .then(res => {
-        //         const ip = res.data.ip; // เช่น 172.20.10.2
-        //         console.log("DEBUG: IPv4 =", ip);
-        //         setUrl(`http://${ip}:3000`); // สร้าง URL จาก IPv4
-        //     })
-        //     .catch(err => console.error("Error fetching IP:", err));
+        
         setUrl(`http://${ip}:3000`);
     }, [ip]);
 
-    // setInterval(() => {
-    //     setUrl(`http://${ip}:3000`);
-    // }, 1000);
 
     const downloadQR = () => {
         const canvas = document.getElementById("wifi-qr");

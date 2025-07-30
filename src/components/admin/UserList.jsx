@@ -19,7 +19,7 @@
 //         try {
 //             const bodyData = {
 //                 db_type: "mysql",
-//                 store_code: "user_privacy",
+//                 store_code: "user_auth",
 //                 field_list: "*",
 //                 where: "*",
 //             };
@@ -40,7 +40,7 @@
 //         try {
 //             const payload = {
 //                 db_type: "mysql",
-//                 store_code: "user_privacy",
+//                 store_code: "user_auth",
 //                 where: { user_id: user.user_id },
 //                 set: { user_role: newRole },
 //             };
@@ -186,7 +186,7 @@ function UserList() {
         try {
             const bodyData = {
                 db_type: "mysql",
-                store_code: "user_privacy",
+                store_code: "user_auth",
                 field_list: "*",
                 where: "*",
             };
@@ -213,7 +213,7 @@ function UserList() {
         try {
             const payload = {
                 db_type: "mysql",
-                store_code: "user_privacy",
+                store_code: "user_auth",
                 where: { user_id: user.user_id },
                 set: { user_role: newRole },
             };
@@ -245,7 +245,7 @@ function UserList() {
         try {
             const payload = {
                 db_type: "mysql",
-                store_code: "user_privacy",
+                store_code: "user_auth",
                 where: { user_id: user.user_id },
             };
 
