@@ -14,7 +14,7 @@ const MenuItem = ({ item, onOrderClick, onDetailClick, menuTypeData }) => {
         <div className="menu-item">
             <img
                 className="menu-image"
-                src={`/img/${item.image}`}
+                src={`http://localhost:5000/storages/images/${item.image}`}
                 alt={item.menu_name}
                 onClick={() => onOrderClick(item)}
             />

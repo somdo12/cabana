@@ -11,7 +11,7 @@ const Bill = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-  const fetchOrder = async () => {
+const fetchOrder = async () => {
     try {
         const res = await Axios.post("http://localhost:5000/v1/store/fetch", {
             db_type: "mysql",
