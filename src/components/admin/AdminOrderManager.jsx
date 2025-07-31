@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import Axios from "axios";
 import "../../css/AdminOrderManager.css";
-import socket from "./socket-conn"; 
+import socket from "./socket-conn";
 import { API_BASE_URL } from "../../config";
 
 function AdminOrderManager() {
@@ -352,10 +352,12 @@ function AdminOrderManager() {
               {orderDetails.map((item, index) => (
                 <div className="modal-item-row" key={index}>
                   <img
-                    src={`/img/${menuMap[item.menu_id]?.image || "noimage.jpg"}`}
+                    src={`http://${window.location.hostname}:5000/storages/images/${menuMap[item.menu_id]?.image || "noimage.jpg"}`}
                     alt="menu"
                     className="modal-menu-image"
                   />
+
+
                   <div className="modal-menu-info">
                     <div><strong>{menuMap[item.menu_id]?.name || `Menu #${item.menu_id}`}</strong></div>
                     <div>ຈຳນວນ: {item.order_qty}</div>
