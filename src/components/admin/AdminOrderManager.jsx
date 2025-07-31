@@ -58,7 +58,7 @@ function AdminOrderManager() {
         `${API_BASE_URL}/fetch`,
         {
           db_type: "mysql",
-          store_code: "user_privacy",
+          store_code: "user_auth",
           field_list: "*",
           where: "*",
         },
