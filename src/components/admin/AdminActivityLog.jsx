@@ -26,6 +26,7 @@ const AdminActivityLog = () => {
                 field_list: "*",
                 where: "*",
             };
+            console.log("🔄 ກຳລັງດຶງ log:", bodyData);
             const response = await axios.post(ENDPOINTS.FETCH, bodyData);
             setLogs(response.data.data || []);
         } catch (error) {

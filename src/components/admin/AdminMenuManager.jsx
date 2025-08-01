@@ -181,7 +181,7 @@ function AdminMenuManager() {
             console.error("❌ deleteMenu error:", err);
             alert("❌ ເກີດຂໍ້ຜິດພາດໃນການລຶບເມນູ");
         }
-    };
+    };        
     return (
         <div className="menu-manager">
             <h2>ຈັດການເມນູ</h2>

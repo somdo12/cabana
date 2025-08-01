@@ -34,41 +34,29 @@ const RegisterForm = () => {
                 db_type: "mysql",
                 store_code: "user_auth",
                 set: {
-                    email: formData.user_email,
+                    user_email: formData.user_email,
                     user_name: formData.user_name,
                 
                     user_password: formData.user_password,
-                    user_role: "staff", // ให้ default เป็น staff
+                    user_role: "staff",
                 },
             };
-            // const result = await Axios.post(ENDPOINTS.CREATE, bodyData);
             const result = await Axios.post(`http://${HOSTNAME}:5000/v1/auth/sign-up`, bodyData);
-            
-            
-            
             console.log("เพิ่มผู้ใช้สำเร็จ:", result.data);
             
-
-            // ✅ บันทึก Log
             const logPayload = {
                 db_type: "mysql",
                 store_code: "user_activity_log",
                 set: {
-                    action: `ເພີ່ມຜູ້ໃຊ້: ${formData.name}`,
-                    performed_by: currentUser?.name || "System",
+                    action: `ເພີ່ມຜູ້ໃຊ້: ${formData.user_name}`,
+                    performed_by: currentUser?.user_name || "System",
                     performed_at: new Date().toISOString(),
                     performed_role: currentUser?.role,
                     target_user_id: currentUser?.id,
                 },
             };
-            await Axios.post(ENDPOINTS.CREATE, logPayload);
-            
-
-
-
+            await Axios.post(ENDPOINTS.CREATE, logPayload);         
             alert("ລົງທະບຽນສຳເລັດແລ້ວ!");
-
-        
             setFormData({ name: "", email: "", user_password: "" });
             navigate("/admin/users");
         } catch (error) {
@@ -104,10 +92,9 @@ const RegisterForm = () => {
 
                 <input
                     type="password"
-                    // name="password" ບ່ອນ3
-                    name="user_password"
-                    placeholder="ລະຫັດຜ່ານ"
                 
+                    name="user_password"
+                    placeholder="ລະຫັດຜ່ານ"            
                     value={formData.user_password}
                     onChange={handleChange}
                     required
@@ -121,80 +108,3 @@ const RegisterForm = () => {
 
 export default RegisterForm;
 
-// ໃຊ້ງານໄດ້ ມື້ຄືນີນີ້ 24/4/2025
-
-//  import React, { useState } from "react";
-// import axios from "axios";
-// import { useNavigate } from "react-router-dom";
-// import { HOSTNAME } from "../config";
-
-
-// // import "../css/RegisterForm.css"; 
-
-// function Register() {
-//     const [formData, setFormData] = useState({
-//         user_name: "",
-//         email: "",
-//         user_password: ""
-//     });
-
-//     const navigate = useNavigate();
-
-//     const handleChange = (e) => {
-//         setFormData({ ...formData, [e.target.name]: e.target.value });
-//     };
-
-//     const handleSubmit = async (e) => {
-//         e.preventDefault();
-//         try {
-//             const payload = {
-//                 db_type: "mysql",
-//                 store_code: "user_auth",
-//                 set: formData
-//             };
-
-//             await axios.post(`http://${HOSTNAME}:5000/v1/auth/sign-up`, payload);
-
-//             alert("✅ เพิ่มผู้ใช้สำเร็จ");
-//             navigate("/admin/users"); 
-
-//         } catch (error) {
-//             console.error("❌ เพิ่มผู้ใช้ล้มเหลว:", error);
-//         }
-//     };
-
-//     return (
-//         <div className="register-container">
-//             <h2>📝 ລົງທະບຽນຜູ້ໃຊ້ໃໝ່</h2>
-//             <form onSubmit={handleSubmit} className="register-form">
-//                 <label>ຊື່ຜູ້ໃຊ້</label>
-//                 <input
-//                     type="text"
-//                     name="user_name"
-//                     value={formData.user_name}
-//                     onChange={handleChange}
-//                     required
-//                 />
-//                 <label>ອີເມວ</label>
-//                 <input
-//                     type="email"
-//                     name="email"
-//                     value={formData.email}
-//                     onChange={handleChange}
-//                     required
-//                 />
-//                 <label>ລະຫັດຜ່ານ</label>
-//                 <input
-//                     type="password"
-//                     name="secretword"
-//                     value={formData.secretword}
-//                     onChange={handleChange}
-//                     required
-//                 />
-//                 <button type="submit">✅ ບັນທຶກ</button>
-//             </form>
-//         </div>
-//     );
-// }
-
-// export default Register;  

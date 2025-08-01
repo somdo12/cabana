@@ -19,19 +19,42 @@ function AdminOrderManager() {
   const [selectedPaymentOrderId, setSelectedPaymentOrderId] = useState(null);
   const [selectedPaymentType, setSelectedPaymentType] = useState("cash");
 
-  // ================== FETCH ORDERS ==================
+  // // ================== FETCH ORDERS ==================
+  // const fetchOrders = async () => {
+  //   try {
+  //     const res = await Axios.post(
+  //       `${API_BASE_URL}/fetch`,
+  //       { db_type: "mysql", store_code: "tb_order", field_list: "*", where: "*" },
+  //       { headers: { "Content-Type": "application/json" } }
+  //     );
+  //     setOrders(res.data.data || []);
+  //   } catch (err) {
+  //     console.error("❌ fetchOrders error:", err);
+  //   }
+  // };
   const fetchOrders = async () => {
     try {
       const res = await Axios.post(
         `${API_BASE_URL}/fetch`,
-        { db_type: "mysql", store_code: "tb_order", field_list: "*", where: "*" },
+        {
+          db_type: "mysql",
+          store_code: "tb_order",
+          field_list: "*",
+          where: "*",
+        },
         { headers: { "Content-Type": "application/json" } }
       );
-      setOrders(res.data.data || []);
+
+      const sortedOrders = (res.data.data || []).sort((a, b) => {
+        return new Date(b.order_date) - new Date(a.order_date); // เรียงจากใหม่ไปเก่า
+      });
+
+      setOrders(sortedOrders);
     } catch (err) {
       console.error("❌ fetchOrders error:", err);
     }
   };
+
 
   // ================== FETCH MENU ==================
   const fetchMenuMap = async () => {
@@ -214,6 +237,48 @@ function AdminOrderManager() {
     }
   };
 
+
+  const deleteOrder = async (orderId) => {
+    const confirmDelete = window.confirm("🗑 ທ່ານແນ່ໃຈບໍ່ວ່າຈະລຶບອໍເດີນີ້?");
+    if (!confirmDelete) return;
+
+    try {
+      // 🔁 ลบรายการลูกใน tb_order_detail ก่อน
+      await Axios.post(
+        `${API_BASE_URL}/delete`,
+        {
+          db_type: "mysql",
+          store_code: "tb_order_detail",
+          where: { order_id: orderId },
+        },
+        { headers: { "Content-Type": "application/json" } }
+      );
+
+      // ✅ จากนั้นลบ tb_order
+      const res = await Axios.post(
+        `${API_BASE_URL}/delete`,
+        {
+          db_type: "mysql",
+          store_code: "tb_order",
+          where: { order_id: orderId },
+        },
+        { headers: { "Content-Type": "application/json" } }
+      );
+
+      const msg = res.data?.message?.toLowerCase() || "";
+      if (msg.includes("has been deleted")) {
+        alert("✅ ລຶບອໍເດີສຳເລັດແລ້ວ");
+        fetchOrders(); // รีโหลดข้อมูล
+      } else {
+        alert("❌ ລຶບບໍ່ສຳເລັດ: " + msg);
+      }
+    } catch (err) {
+      console.error("❌ deleteOrder error:", err);
+      alert("❌ ເກີດຂໍ້ຜິດພາດໃນການລຶບ");
+    }
+  };
+
+
   // ================== SOCKET LISTENERS ==================
   useEffect(() => {
     if (!socket) return;
@@ -238,6 +303,8 @@ function AdminOrderManager() {
       socket.off("update_order_detail_status");
     };
   }, [selectedOrderId]);
+
+
 
   // ================== DATE FORMAT ==================
   const formatDate = (isoDateString) => {
@@ -336,6 +403,14 @@ function AdminOrderManager() {
                 >
                   ເບິ່ງລາຍການ
                 </button>
+                <button
+                  onClick={() => deleteOrder(order.order_id)}
+                  className="btn-delete-order"
+                >
+                  🗑 ລົບອໍເດີ
+                </button>
+
+
               </td>
             </tr>
           ))}
