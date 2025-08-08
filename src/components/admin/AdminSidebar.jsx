@@ -1,5 +1,4 @@
-
-import React from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../../css/admin.css";
 
@@ -7,6 +6,7 @@ function AdminSidebar() {
     const user = JSON.parse(localStorage.getItem("user"));
     const role = user?.role;
     const navigate = useNavigate();
+    const [isUsersDropdownOpen, setIsUsersDropdownOpen] = useState(false);
 
     const goToMenu = () => {
         navigate("/menu");
@@ -17,10 +17,14 @@ function AdminSidebar() {
     };
 
     const handleLogout = () => {
-        if (window.confirm("คุณต้องการออกจากระบบหรือไม่?")) {
+        if (window.confirm("ເຈົ້າຕ້ອງການອອກຈາກລະບົບແທ້ບໍ່?")) {
             localStorage.clear();
             navigate("/login");
         }
+    };
+
+    const toggleUsersDropdown = () => {
+        setIsUsersDropdownOpen(!isUsersDropdownOpen);
     };
 
     return (
@@ -41,13 +45,23 @@ function AdminSidebar() {
                 <li><Link to="/admin/orders">📋 ລາຍການສັ່ງຊື້</Link></li>
                 <li><Link to="/admin/menu">🍽️ ຈັດການເມນູ</Link></li>
                 {role === "admin" && (
-                    <li><Link to="/admin/users">👤 ຜູ້ໃຊ້ງານ</Link></li>
+                    <li className="dropdown-item">
+                        <div className="dropdown-toggle" onClick={toggleUsersDropdown}>
+                            👤 ຜູ້ໃຊ້ງານ
+                            <span className={`dropdown-arrow ${isUsersDropdownOpen ? 'open' : ''}`}>▼</span>
+                        </div>
+                        {isUsersDropdownOpen && (
+                            <ul className="dropdown-menu">
+                                <li><Link to="/admin/users">👤 ຜູ້ໃຊ້ງານ</Link></li>
+                                <li><Link to="/admin/activity-log">🗂️ ປະຫວັດການເຄື່ອນໄຫວ</Link></li>
+                            </ul>
+                        )}
+                    </li>
                 )}
-                <li><Link to="/admin/activity-log">🗂️ ປະຫວັດການເຄື່ອນໄຫວ</Link></li> 
                 {/* <li><Link to="/admin/delete-history">🗑️ ປະຫວັດການລົບ</Link></li> */}
-                <li><Link to="/admin/sales">📊 ລາຍງານຍອດຂາຍ</Link></li>
-                <li><Link to="/admin/report-menu">📈 ລາຍງານເມນູ</Link></li>
-                <li><Link to="/admin/report-menu-type">📑 ລາຍງານປະເພດເມນູ</Link></li> {/* ✅ เพิ่มลิงก์นี้ */}
+                <li><Link to="/admin/sales">📊 ຍອດຂາຍທັງໝົດ</Link></li>
+                <li><Link to="/admin/report-menu">📈 ຍອດຂາຍເມນູ</Link></li>
+                <li><Link to="/admin/report-menu-type">📑 ຍອດຂາຍປະເພດເມນູ</Link></li> {/* ✅ เพิ่มลิงก์นี้ */}
             </ul>
 
             {/* ปุ่ม Logout */}
@@ -59,4 +73,3 @@ function AdminSidebar() {
 }
 
 export default AdminSidebar;
-

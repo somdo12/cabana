@@ -116,6 +116,7 @@ function Menu() {
             note,
             total: selectedMenu.menu_price * quantity
         };
+        console.log("DEBUG addToCart: newItem =", newItem);
         setCart((prev) => [...prev, newItem]);
         closeModal();
     };
@@ -126,7 +127,9 @@ function Menu() {
 
     /** ====== ส่งคำสั่งซื้อ ====== */
     const submitOrder = async () => {
-        console.log("DEBUG: submitOrder called, cart =", cart);
+        // console.log("DEBUG: submitOrder called, cart =", cart);
+        console.log("DEBUG submitOrder: cart =", cart);
+
         if (cart.length === 0) {
             // alert("🛒 ກະລຸນາເພີ່ມລາຍການກ່ອນກົດສັ່ງຊື້");
             return;
@@ -166,10 +169,15 @@ function Menu() {
                 status_order: "preparing",
                 order_qty: item.quantity,
                 order_price: item.menu_price,
-                order_total: item.total
+                order_total: item.total,
+                note: item.note 
+
             }));
 
-            console.log("DEBUG: orderDetails =", orderDetails);
+            // console.log("DEBUG: orderDetails =", orderDetails);
+            console.log("DEBUG orderDetails before send:", orderDetails);
+            // ใส่ใน submitOrder ก่อนส่ง API
+            console.log("DEBUG orderDetails JSON:", JSON.stringify(orderDetails, null, 2));
 
             const detailRes = await Axios.post(`${API_BASE_URL}/create`, {
                 db_type: "mysql",

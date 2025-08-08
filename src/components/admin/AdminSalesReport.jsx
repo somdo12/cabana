@@ -1,17 +1,16 @@
-
 import React, { useState, useEffect } from "react";
 import Axios from "axios";
 import "../../css/AdminSalesReport.css";
+import { API_BASE_URL } from "../../config";
 
 function AdminSalesReport() {
     const [orders, setOrders] = useState([]);
     const [selectedDate, setSelectedDate] = useState("");
-    const [showPaidOnly, setShowPaidOnly] = useState(false);
 
     const fetchOrders = async () => {
         try {
             const res = await Axios.post(
-                "http://localhost:5000/v1/store/fetch",
+                `${API_BASE_URL}/fetch`,
                 {
                     db_type: "mysql",
                     store_code: "tb_order",
@@ -40,9 +39,8 @@ function AdminSalesReport() {
         })
         : orders;
 
-    const filteredOrders = showPaidOnly
-        ? filteredByDate.filter((order) => order.payment_status === "paid")
-        : filteredByDate;
+    // แสดงแค่ order ที่จ่ายเงินแล้ว
+    const filteredOrders = filteredByDate.filter((order) => order.payment_status === "paid");
 
     const totalRevenue = filteredOrders.reduce((sum, o) => sum + o.total_price, 0);
 
@@ -72,15 +70,11 @@ function AdminSalesReport() {
                         onChange={(e) => setSelectedDate(e.target.value)}
                     />
                 </label>
-                <label className="toggle-paid-only">
-                    <input
-                        type="checkbox"
-                        checked={showPaidOnly}
-                        onChange={(e) => setShowPaidOnly(e.target.checked)}
-                    />
-                    ສະແດງສະເພາະລາຍການທີ່ຊຳລະແລ້ວ
-                </label>
             </div>
+
+            <p className="total-revenue">
+                💰 ຍອດຂາຍລວມ: {totalRevenue.toLocaleString()} kip
+            </p>
 
             <table>
                 <thead>
@@ -112,9 +106,6 @@ function AdminSalesReport() {
                     )}
                 </tbody>
             </table>
-            <p className="total-revenue">
-                💰 ຍອດຂາຍລວມ: {totalRevenue.toLocaleString()} kip
-            </p>
         </div>
     );
 }

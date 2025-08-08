@@ -3,11 +3,13 @@ import "../css/OrderModal.css";
 
 const OrderModal = ({ menu, quantity, note, onClose, onAddToCart, onQuantityChange, onNoteChange }) => {
     if (!menu) return null;
+    // เพิ่มใน OrderModal ก่อน return
+    console.log("DEBUG OrderModal: note =", note);
 
     return (
         <div className="order-modal-overlay" onClick={onClose}>
             <div className="order-modal-content" onClick={(e) => e.stopPropagation()}>
-                
+
                 {/* รูปเมนู */}
                 <img
                     className="modal-menu-image"

@@ -140,7 +140,7 @@ function OrderStatus() {
                         <div key={index} className="order-item">
                             <div className="order-item-name">
                                 <p>{menuMap[item.menu_id] || `ເມນູ #${item.menu_id}`} × {item.order_qty}</p>
-                                <p><strong>ໝາຍເຫດ:</strong> {item.description || 'ບໍ່ມີ'}</p>
+                                <p><strong>ໝາຍເຫດ:</strong> {item.note || 'ບໍ່ມີ'}</p>
                                 <p>
                                     <span className={`status-badge status-${item.status_order}`}>
                                         {item.status_order === "preparing" ? "ກຳລັງເຮັດ"

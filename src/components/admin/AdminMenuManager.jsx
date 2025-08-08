@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import Axios from "axios";
 import "../../css/AdminMenuManager.css";
-import { API_BASE_URL } from "../../config"; 
+import { API_BASE_URL } from "../../config";
 import { UploadImageIntoServer } from "./uploadImage";
 
 
@@ -21,6 +21,7 @@ function AdminMenuManager() {
     });
 
     const [editMenu, setEditMenu] = useState(null);
+    const [editImageFile, setEditImageFile] = useState(null);
 
     const handleAddMenu = async () => {
         try {
@@ -69,6 +70,16 @@ function AdminMenuManager() {
     const handleUpdateMenu = async () => {
         try {
             console.log("📤 Updating menu:", editMenu);
+
+            let imageFileName = editMenu.image; // ใช้รูปเดิม
+
+            // ถ้ามีการเลือกไฟล์รูปใหม่
+            if (editImageFile) {
+                const uploadedImageData = await UploadImageIntoServer(editImageFile);
+                console.log("Uploaded new image:", uploadedImageData);
+                imageFileName = uploadedImageData.data.data.name;
+            }
+
             const res = await Axios.post(
                 `${API_BASE_URL}/edit`,
                 {
@@ -79,7 +90,7 @@ function AdminMenuManager() {
                         menu_name: editMenu.menu_name,
                         menu_price: parseInt(editMenu.menu_price),
                         menu_type_id: parseInt(editMenu.menu_type_id),
-                        image: editMenu.image,
+                        image: imageFileName, // ใช้ชื่อไฟล์ใหม่หรือเดิม
                         menu_status: editMenu.menu_status,
                     },
                 },
@@ -91,6 +102,7 @@ function AdminMenuManager() {
             if (msg.includes("edited")) {
                 alert("✅ ແກ້ໄຂເມນູສຳເລັດແລ້ວ");
                 setIsEditModalOpen(false);
+                setEditImageFile(null); // รีเซ็ตไฟล์รูป
                 fetchMenus();
             } else {
                 alert("❌ ບໍ່ສາມາດແກ້ໄຂເມນູໄດ້: " + msg);
@@ -101,6 +113,24 @@ function AdminMenuManager() {
         }
     };
 
+    // const fetchMenus = async () => {
+    //     try {
+    //         const res = await Axios.post(
+    //             `${API_BASE_URL}/fetch`,
+    //             {
+    //                 db_type: "mysql",
+    //                 store_code: "tb_menu",
+    //                 field_list: "*",
+    //                 where: "*",
+    //             },
+    //             { headers: { "Content-Type": "application/json" } }
+    //         );
+    //         console.log("📥 Menus fetched:", res.data.data);
+    //         setMenus(res.data.data || []);
+    //     } catch (error) {
+    //         console.error("❌ fetchMenus error:", error);
+    //     }
+    // };
     const fetchMenus = async () => {
         try {
             const res = await Axios.post(
@@ -109,18 +139,26 @@ function AdminMenuManager() {
                     db_type: "mysql",
                     store_code: "tb_menu",
                     field_list: "*",
-                    where: "*",
+                    where: "*", // ดึงทั้งหมดมาก่อน
                 },
                 { headers: { "Content-Type": "application/json" } }
             );
+
             console.log("📥 Menus fetched:", res.data.data);
-            setMenus(res.data.data || []);
+
+            // กรองเอาแค่เมนูที่ไม่ได้ถูกลบ (is_deleted = 0)
+            const activeMenus = (res.data.data || []).filter(menu =>
+                menu.is_deleted === 0 || menu.is_deleted === null
+            );
+
+            setMenus(activeMenus);
+
         } catch (error) {
             console.error("❌ fetchMenus error:", error);
         }
     };
-
     useEffect(() => {
+
         fetchMenus();
         const fetchMenuTypes = async () => {
             try {
@@ -154,12 +192,13 @@ function AdminMenuManager() {
 
     const deleteMenu = async (menuId) => {
         const confirmDelete = window.confirm(
-            "ທ່ານແນ່ໃຈບໍ່ວ່າຕ້ອງການລຶບເມນູນີ້?"
+            "ທ່ານແນ່ໃຈບໍ່ວ່າຕ້ອງການລຶບເມນູນີ້? (เมนูจะถูกซ่อนและไม่แสดงในระบบ)"
         );
         if (!confirmDelete) return;
 
         try {
-            const res = await Axios.post(
+            // ลองลบจริงก่อน (สำหรับเมนูใหม่ที่ยังไม่มีการสั่งซื้อ)
+            const deleteRes = await Axios.post(
                 `${API_BASE_URL}/delete`,
                 {
                     db_type: "mysql",
@@ -169,19 +208,61 @@ function AdminMenuManager() {
                 { headers: { "Content-Type": "application/json" } }
             );
 
-            console.log("🗑️ Delete response:", res.data);
-            const msg = res.data?.message?.toLowerCase() || "";
-            if (msg.includes("has been deleted")) {
+            console.log("🗑️ Delete attempt response:", deleteRes.data);
+
+            // ถ้าลบสำเร็จ
+            const deleteMsg = deleteRes.data?.message?.toLowerCase() || "";
+            if (deleteMsg.includes("has been deleted")) {
                 alert("✅ ລຶບເມນູສຳເລັດແລ້ວ");
                 fetchMenus();
-            } else {
-                alert("❌ ລຶບເມນູບໍ່ສຳເລັດ: " + msg);
+                return;
             }
-        } catch (err) {
-            console.error("❌ deleteMenu error:", err);
-            alert("❌ ເກີດຂໍ້ຜິດພາດໃນການລຶບເມນູ");
+
+        } catch (deleteError) {
+            console.log("❌ Hard delete failed, trying soft delete:", deleteError.response?.data);
+
+            // ถ้าลบไม่ได้ (Foreign Key Error) ให้ทำ Soft Delete
+            if (deleteError.response?.status === 409 ||
+                deleteError.response?.data?.message?.includes("foreign key") ||
+                deleteError.response?.data?.message?.includes("constraint")) {
+
+                try {
+                    // Soft Delete - ใช้ field is_deleted
+                    const softDeleteRes = await Axios.post(
+                        `${API_BASE_URL}/edit`,
+                        {
+                            db_type: "mysql",
+                            store_code: "tb_menu",
+                            where: { menu_id: menuId },
+                            set: {
+                                is_deleted: 1 // 1 = ถูกลบ, 0 = ยังไม่ถูกลบ
+                            },
+                        },
+                        { headers: { "Content-Type": "application/json" } }
+                    );
+
+                    console.log("✅ Soft delete response:", softDeleteRes.data);
+                    const softMsg = softDeleteRes.data?.message?.toLowerCase() || "";
+
+                    if (softMsg.includes("edited")) {
+                        alert("✅ ເມນູຖືກເຊື່ອງແລ້ວ (ບໍ່ສາມາດລຶບໄດ້ເນື່ອງຈາກມີການສັ່ງຊື້)");
+                        fetchMenus();
+                    } else {
+                        alert("❌ ບໍ່ສາມາດເຊື່ອງເມນູໄດ້");
+                    }
+
+                } catch (softDeleteError) {
+                    console.error("❌ Soft delete error:", softDeleteError);
+                    alert("❌ ເກີດຂໍ້ຜິດພາດໃນການເຊື່ອງເມນູ");
+                }
+
+            } else {
+                // Error อื่นๆ
+                console.error("❌ deleteMenu error:", deleteError);
+                alert("❌ ເກີດຂໍ້ຜິດພາດໃນການລຶບເມນູ");
+            }
         }
-    };        
+    };
     return (
         <div className="menu-manager">
             <h2>ຈັດການເມນູ</h2>
@@ -202,7 +283,7 @@ function AdminMenuManager() {
                         <th>ການຄວບຄຸມ</th>
                     </tr>
                 </thead>
-            
+
                 <tbody>
                     {menus.map((menu) => (
                         <tr key={menu.menu_id}>
@@ -321,7 +402,6 @@ function AdminMenuManager() {
                 >
                     <div className="modal-content" onClick={(e) => e.stopPropagation()}>
                         <h3>✏️ ແກ້ໄຂເມນູ</h3>
-
                         <input
                             type="text"
                             placeholder="ຊື່ເມນູ"
@@ -330,6 +410,41 @@ function AdminMenuManager() {
                                 setEditMenu({ ...editMenu, menu_name: e.target.value })
                             }
                         />
+                        <div className="image-preview-container">
+
+                            <div className="current-image-display">
+                                <img
+                                    src={`http://localhost:5000/storages/images/${editMenu.image}`}
+                                    alt={editMenu.menu_name}
+                                    className="current-image"
+                                />
+                                <p className="current-image-name">📂 {editMenu.image}</p>
+                            </div>
+
+                            <label>📸 เลือกรูปใหม่ (ถ้าต้องการเปลี่ยน):</label>
+                            <input
+                                type="file"
+                                accept="image/*"
+                                onChange={(e) => {
+                                    const file = e.target.files[0];
+                                    setEditImageFile(file);
+                                }}
+                                className="file-input"
+                            />
+
+                            {editImageFile && (
+                                <div className="new-image-preview">
+                                    <p className="new-image-name">
+                                        ✨ รูปใหม่ที่เลือก: <strong>{editImageFile.name}</strong>
+                                    </p>
+                                    <img
+                                        src={URL.createObjectURL(editImageFile)}
+                                        alt="Preview"
+                                        className="preview-image"
+                                    />
+                                </div>
+                            )}
+                        </div>
 
                         <input
                             type="number"
@@ -362,7 +477,6 @@ function AdminMenuManager() {
                             }
                         />
 
-                        {/* 🔽 Dropdown เลือกสถานะเมนู */}
                         <select
                             value={editMenu.menu_status || "available"}
                             onChange={(e) =>
@@ -372,6 +486,22 @@ function AdminMenuManager() {
                             <option value="available">🟢 ສະແດງເມນູ (Available)</option>
                             <option value="hidden">🚫 ບໍ່ສະແດງເມນູ (Hidden)</option>
                         </select>
+                        
+                        {editMenu.is_deleted === 1 && (
+                            <label style={{ color: 'red', marginTop: '10px', display: 'block' }}>
+                                <input
+                                    type="checkbox"
+                                    checked={false}
+                                    onChange={(e) => {
+                                        if (e.target.checked) {
+                                            setEditMenu({ ...editMenu, is_deleted: 0 });
+                                        }
+                                    }}
+                                />
+                                🔄 ກູ້ຄືນເມນູນີ້ (Restore Menu)
+                            </label>
+                        )}
+
 
                         <div style={{ marginTop: "10px" }}>
                             <button onClick={handleUpdateMenu} className="edit-btn">

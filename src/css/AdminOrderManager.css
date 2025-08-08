@@ -307,3 +307,73 @@ button {
 .btn-delete-order:hover {
     background-color: #d32f2f;
 }
+/* เพิ่ม CSS นี้ในไฟล์ AdminMenuManager.css */
+
+/* Image Preview Container */
+.image-preview-container {
+    margin: 10px 0;
+}
+
+.image-preview-container label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+/* Current Image Display */
+.current-image-display {
+    margin: 10px 0;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+.current-image {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 2px solid #ccc;
+}
+
+.current-image-name {
+    font-size: 12px;
+    color: #666;
+    margin-top: 5px;
+    margin-bottom: 0;
+}
+
+/* File Input Styling */
+.file-input {
+    margin: 5px 0;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: 100%;
+    font-size: 14px;
+}
+
+/* New Image Preview */
+.new-image-preview {
+    margin: 10px 0;
+    padding: 10px;
+    background-color: #f0f8ff;
+    border: 1px solid #0066cc;
+    border-radius: 8px;
+}
+
+.new-image-name {
+    font-size: 14px;
+    color: #0066cc;
+    margin: 0 0 10px 0;
+}
+
+.preview-image {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 2px solid #0066cc;
+}

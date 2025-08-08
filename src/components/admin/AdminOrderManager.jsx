@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import Axios from "axios";
 import "../../css/AdminOrderManager.css";
@@ -13,6 +12,7 @@ function AdminOrderManager() {
   const [menuMap, setMenuMap] = useState({});
   const [statusSummaryMap, setStatusSummaryMap] = useState({});
   const [userMap, setUserMap] = useState({ 0: "ลูกค้า (Guest)" });
+  const [currentOrderData, setCurrentOrderData] = useState(null); // เพิ่มเพื่อเก็บข้อมูล order ปัจจุบัน
 
   // Modal เลือกวิธีจ่ายเงิน
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
@@ -138,6 +138,10 @@ function AdminOrderManager() {
       );
       setSelectedOrderId(orderId);
       setOrderDetails(res.data.data || []);
+      
+      // หาข้อมูล order ปัจจุบัน
+      const currentOrder = orders.find(order => order.order_id === orderId);
+      setCurrentOrderData(currentOrder);
     } catch (err) {
       console.error("❌ fetchOrderDetails error:", err);
     }
@@ -168,6 +172,11 @@ function AdminOrderManager() {
 
       if (res.data.message.includes("has been edited")) {
         await fetchOrders();
+        // อัปเดต currentOrderData ด้วย
+        const updatedOrder = orders.find(order => order.order_id === orderId);
+        if (updatedOrder) {
+          setCurrentOrderData({ ...updatedOrder, payment_status: newStatus });
+        }
         alert(`✅ ສະຖານະການຈ່າຍ: ${newStatus === "paid" ? "ຊຳລະແລ້ວ" : "ຍົກເລິກ"}`);
       }
     } catch (err) {
@@ -211,6 +220,14 @@ function AdminOrderManager() {
 
       if (res.data.message.includes("has been edited")) {
         await fetchOrders();
+        // อัปเดต currentOrderData ด้วย
+        if (currentOrderData && currentOrderData.order_id === selectedPaymentOrderId) {
+          setCurrentOrderData({ 
+            ...currentOrderData, 
+            payment_status: "paid",
+            payment_type: selectedPaymentType 
+          });
+        }
         setIsPaymentModalOpen(false);
         alert(`✅ ອັບເດດການຊຳລະເງິນນແລ້ວ: ${selectedPaymentType}`);
       }
@@ -354,43 +371,10 @@ function AdminOrderManager() {
               <td>{formatDate(order.order_date)}</td>
               <td>{statusSummaryMap[order.order_id] || "-"}</td>
               <td>
-                {order.payment_status === "unpaid" ? (
-                  <button
-                    onClick={() => {
-                      setSelectedPaymentOrderId(order.order_id);
-                      setSelectedPaymentType(order.payment_type || "cash");
-                      setIsPaymentModalOpen(true);
-                    }}
-                    className="btn-confirm-pay"
-                  >
-                    ✅ ຢືນຢັນການຈ່າຍ
-                  </button>
+                {order.payment_status === "paid" ? (
+                  <span className="payment-status-paid">✅ ຊຳລະແລ້ວ ({order.payment_type})</span>
                 ) : (
-                  <>
-                    <div>ປະເພດເງິນ: {order.payment_type}</div>
-                    <button
-                      onClick={() => {
-                        setSelectedPaymentOrderId(order.order_id);
-                        setSelectedPaymentType(order.payment_type);
-                        setIsPaymentModalOpen(true);
-                      }}
-                      className="btn-edit-pay"
-                    >
-                      ✏ ແກ້ໄຂປະເພດເງຶນ
-                    </button>
-                    <button
-                      onClick={() => updatePaymentStatus(order.order_id, "unpaid")}
-                      className="btn-cancel-pay"
-                    >
-                      ❌ ຍົກເລີກການຈ່າຍ
-                    </button>
-                    <button
-                      onClick={() => window.open(`/bill/${order.order_id}`, "_blank")}
-                      className="btn-print"
-                    >
-                      🖨 ພິມໃບສັ່ງຊື້
-                    </button>
-                  </>
+                  <span className="payment-status-unpaid">❌ ຍັງບໍ່ຊຳລະ</span>
                 )}
               </td>
               <td>
@@ -409,8 +393,6 @@ function AdminOrderManager() {
                 >
                   🗑 ລົບອໍເດີ
                 </button>
-
-
               </td>
             </tr>
           ))}
@@ -419,10 +401,74 @@ function AdminOrderManager() {
 
       <p className="total-revenue">💰 ຍອດຂາຍລວມທັງໝົດ: {totalRevenue.toLocaleString()} kip</p>
 
-      {isModalOpen && (
+      {isModalOpen && currentOrderData && (
         <div className="modal-overlay" onClick={() => setIsModalOpen(false)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <h3>ລາຍການຄຳສັ່ງຊື້ #{selectedOrderId}</h3>
+            
+            {/* ส่วนจัดการการจ่ายเงิน */}
+            <div className="payment-management-section">
+              <h4>ການຈັດການການຈ່າຍເງິນ</h4>
+              <div className="payment-info">
+                <strong>ສະຖານະການຈ່າຍ: </strong>
+                {currentOrderData.payment_status === "paid" ? (
+                  <span className="status-paid">ຊຳລະແລ້ວ</span>
+                ) : (
+                  <span className="status-unpaid">ຍັງບໍ່ຊຳລະ</span>
+                )}
+                {currentOrderData.payment_type && (
+                  <>
+                    <br />
+                    <strong>ປະເພດເງິນ: </strong>{currentOrderData.payment_type}
+                  </>
+                )}
+              </div>
+              
+              <div className="payment-actions">
+                {currentOrderData.payment_status === "unpaid" ? (
+                  <button
+                    onClick={() => {
+                      setSelectedPaymentOrderId(currentOrderData.order_id);
+                      setSelectedPaymentType(currentOrderData.payment_type || "ເງຶນສົດ");
+                      setIsPaymentModalOpen(true);
+                    }}
+                    className="btn-confirm-pay"
+                  >
+                    ✅ ຢືນຢັນການຈ່າຍ
+                  </button>
+                ) : (
+                  <>
+                    <button
+                      onClick={() => {
+                        setSelectedPaymentOrderId(currentOrderData.order_id);
+                        setSelectedPaymentType(currentOrderData.payment_type);
+                        setIsPaymentModalOpen(true);
+                      }}
+                      className="btn-edit-pay"
+                    >
+                      ✏ ແກ້ໄຂປະເພດເງິນ
+                    </button>
+                    <button
+                      onClick={() => updatePaymentStatus(currentOrderData.order_id, "unpaid")}
+                      className="btn-cancel-pay"
+                    >
+                      ❌ ຍົກເລີກການຈ່າຍ
+                    </button>
+                    <button
+                      onClick={() => window.open(`/bill/${currentOrderData.order_id}`, "_blank")}
+                      className="btn-print"
+                    >
+                      🖨 ພິມໃບສັ່ງຊື້
+                    </button>
+                  </>
+                )}
+              </div>
+            </div>
+            
+            <hr />
+            
+            {/* ส่วนรายการอาหาร */}
+            <h4>ລາຍການອາຫານ</h4>
             <div className="modal-items-container">
               {orderDetails.map((item, index) => (
                 <div className="modal-item-row" key={index}>
@@ -432,12 +478,16 @@ function AdminOrderManager() {
                     className="modal-menu-image"
                   />
 
-
                   <div className="modal-menu-info">
                     <div><strong>{menuMap[item.menu_id]?.name || `Menu #${item.menu_id}`}</strong></div>
                     <div>ຈຳນວນ: {item.order_qty}</div>
                     <div>ລາຄາ: {item.order_price.toLocaleString()} kip</div>
                     <div>ລວມ: {item.order_total.toLocaleString()} kip</div>
+                    {item.note && item.note.trim() !== "" && (
+                      <div className="menu-note">
+                        📝 <strong>ໝາຍເຫດ:</strong> {item.note}
+                      </div>
+                    )}
                     <div>ສະຖານະ: <span className={`badge-status ${item.status_order}`}>{item.status_order}</span></div>
                     <button onClick={() => updateOrderDetailStatus(item)} className="status-btn">ປ່ຽນສະຖານະ</button>
                   </div>

@@ -40,7 +40,7 @@ const TopNav = ({ searchTerm, setSearchTerm, handleSearch }) => {
                             className="admin-nav-btn"
                             onClick={goToAdminDashboard}
                         >
-                            Admin
+                            Admin Dashboard
                         </button>
                     )}
 
